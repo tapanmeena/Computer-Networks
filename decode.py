@@ -1,4 +1,5 @@
-
+error=""
+terror=""
 
 message=input("Enter the Received Message:-")
 sizeofMsg=message[:8]
@@ -17,7 +18,6 @@ for i in range(0,int(x),2):
 		if(y>maxVal):
 			maxVal=y
 			Value=temp
-		
 		if(y==4 or y==3):
 		#	print("a")
 			continue
@@ -31,7 +31,7 @@ if(count>2):
 #print(sizeofMsg.count(temp))
 else:
 #	print(MsgVal)
-	n=2
+	n=1
 	for i in range(0,int(len(MsgVal)),4):
 		bit1=message[i+8]
 		bit2=message[i+9]
@@ -43,25 +43,33 @@ else:
 		bt4=message.count(bit4,i+8,i+12)
 		n+=1
 		if(bt1==2 and bt2==2 and bt3==2 and bt4==2 ):
-			error.append(str(n)+" ")
+			error=error+str(n)+" "
 		elif bt1==4:
 			decodedMessage+=bit1
 		elif bt1==3:
 			decodedMessage+=bit1
+			terror=terror+str(n)+" "
 		elif bt2==3:
 			decodedMessage+=bit2
+			terror=terror+str(n)+" "
 		elif bt3==3:
 			decodedMessage+=bit3
+			terror=terror+str(n)+" "
 		elif bt4==3:
 			decodedMessage+=bit4
+			terror=terror+str(n)+" "
 		elif bt1==2:
 			decodedMessage+=bit1
+			terror=terror+str(n)+" "
 		elif bt2==2:
 			decodedMessage+=bit2
+			terror=terror+str(n)+" "
 		elif bt3==2:
 			decodedMessage+=bit3
+			terror=terror+str(n)+" "
 		elif bt4==2:
 			decodedMessage+=bit4
+			terror=terror+str(n)+" "
 		else:
 		 	print("Show error")
 		#print(str(bt1)+" "+str(bt2)+" "+str(bt3)+" "+str(bt4))
@@ -75,14 +83,18 @@ else:
 	for i in range(reduntantbits):
 		decodedMessage="0"+decodedMessage
 	print(decodedMessage)"""
-
-newNumber=bin(int(decodedMessage))
-newNumber=newNumber[2:]
-if(sizeofMsg==len(newNumber)):
-	print(newNumber)
+if error:
+	print("The error is in {} Packet.Retransmit that Packet".format(error))
 else:
-	s=int(Value-int(len(str(newNumber))))
-	print(s)
-	for i in range(s):
-		newNumber="0"+newNumber
-	print(newNumber)
+	newNumber=bin(int(decodedMessage))
+	newNumber=newNumber[2:]
+	if(sizeofMsg==len(newNumber)):
+		print("The Original Message is {} Packet".format(newNumber))
+	else:
+		s=int(int(Value)-int(len(newNumber)))
+		for i in range(s):
+			newNumber="0"+newNumber
+		print("The Original Message is {}".format(newNumber))
+#		print("error {}".format(error))
+if terror:
+	print("The error is in {}Packet".format(terror))
